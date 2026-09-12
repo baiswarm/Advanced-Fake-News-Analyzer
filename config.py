@@ -31,8 +31,8 @@ class Config:
     # Model settings
     MODEL_PATH = os.getenv('MODEL_PATH', 'models/model.pkl')
     VECTORIZER_PATH = os.getenv('VECTORIZER_PATH', 'models/vectorizer.pkl')
-    MAX_FEATURES = int(os.getenv('MAX_FEATURES', 5000))
-    NGRAM_RANGE = tuple(map(int, os.getenv('NGRAM_RANGE', '1,3').split(',')))
+    MAX_FEATURES = int(os.getenv('MAX_FEATURES', 1500))
+    NGRAM_RANGE = tuple(map(int, os.getenv('NGRAM_RANGE', '1,2').split(',')))
 
     # Data settings
     FAKE_CSV = os.getenv('FAKE_CSV', 'data/Fake.csv')
