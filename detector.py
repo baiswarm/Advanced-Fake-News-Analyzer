@@ -229,8 +229,8 @@ class FakeNewsDetector:
         # predictions keep using the *old* model until training finishes)
         print("Creating TF-IDF features...")
         new_vectorizer = TfidfVectorizer(
-            max_features=5000,
-            ngram_range=(1, 3),
+            max_features=1500,
+            ngram_range=(1, 2),
             min_df=2,
             max_df=0.9
         )
