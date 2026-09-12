@@ -312,7 +312,7 @@ def model_info():
         'model_type': 'Random Forest',
         'max_features': app.config['MAX_FEATURES'],
         'ngram_range': app.config['NGRAM_RANGE'],
-        'accuracy': '92.3%',
+        'accuracy': 'Not evaluated',
         'timestamp': datetime.utcnow().isoformat()
     })
 
