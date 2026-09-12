@@ -1,249 +1,418 @@
-# 🔍 Advanced Fake News Detection System
+# 📰 Advanced Fake News Analyzer
 
-An intelligent web application that leverages Machine Learning and Natural Language Processing to detect fake news articles with high accuracy. Built with Flask, scikit-learn, and NLTK.
+An intelligent web-based fake news detection system that analyzes news articles and predicts whether they are **REAL** or **FAKE** using Natural Language Processing and Machine Learning.
 
-![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
-![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Accuracy](https://img.shields.io/badge/Accuracy-92.3%25-brightgreen.svg)
+The system uses **TF-IDF feature extraction** with a **Random Forest classifier**, along with a Flask-based web interface and security-hardened API endpoints.
 
-## ✨ Features
+---
 
-- **High Accuracy**: Achieves 92.3% accuracy using Random Forest classification
-- **Real-time Analysis**: Sub-100ms prediction times
-- **Dual Input Modes**: Analyze text directly or extract from URLs
-- **Confidence Scoring**: Transparent probability distribution for predictions
-- **Modern Web Interface**: Responsive design with gradient animations
-- **API Integration**: RESTful API for external integrations
-- **Model Persistence**: Save and load trained models
-- **Extensible Architecture**: Easy to integrate additional ML models
+## 🚀 Features
 
-## 🚀 Quick Start
+- 🔍 **Fake News Detection**
+  - Classifies news content as REAL or FAKE
+  - Provides classification confidence
 
-### Prerequisites
+- 🧠 **Machine Learning**
+  - TF-IDF text feature extraction
+  - Random Forest classification
+  - Stratified train/test evaluation
+  - Duplicate-text removal during training
 
-- Python 3.8 or higher
-- pip package manager
-- Git
+- 🌐 **Web Interface**
+  - Clean and responsive interface
+  - Text-based news analysis
+  - URL-based article analysis
 
-### Installation
+- 🔐 **Security**
+  - API key authentication
+  - Rate limiting
+  - Configurable CORS
+  - SSRF protection for URL analysis
+  - Redirect validation
+  - Response-size limits
+  - Input validation
+  - Generic server error responses
+  - Protected model-training endpoint
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/manasbaiswar/fake-news-detection.git
-cd fake-news-detection
+- 📊 **Model Information**
+  - Model status
+  - Feature configuration
+  - N-gram configuration
+  - Model performance information
+
+---
+
+## 🛠️ Technology Stack
+
+| Category | Technology |
+|---|---|
+| Programming Language | Python |
+| Backend | Flask |
+| Machine Learning | Scikit-learn |
+| NLP | NLTK |
+| Data Processing | Pandas, NumPy |
+| Feature Extraction | TF-IDF |
+| Classifier | Random Forest |
+| Frontend | HTML, CSS, JavaScript |
+| Dataset | ISOT Fake News Dataset |
+
+---
+
+## 🧠 Machine Learning Pipeline
+
+```text
+News Article
+     │
+     ▼
+Text Preprocessing
+     │
+     ├── Lowercase conversion
+     ├── URL removal
+     ├── HTML removal
+     ├── Email removal
+     ├── Punctuation removal
+     ├── Number removal
+     └── Stop-word filtering
+     │
+     ▼
+TF-IDF Feature Extraction
+     │
+     ├── Maximum Features: 1500
+     └── N-grams: 1–2
+     │
+     ▼
+Random Forest Classifier
+     │
+     ▼
+REAL / FAKE Prediction
+     │
+     ▼
+Confidence + Probabilities
 ```
 
-2. **Create virtual environment**
+---
+
+## 📈 Model Performance
+
+The model was trained using the **ISOT Fake News Dataset**.
+
+After removing duplicate text samples, the training data contained:
+
+- **17,455 Fake articles**
+- **21,191 Real articles**
+- **38,646 total unique samples**
+
+The dataset was evaluated using an **80/20 stratified train-test split**.
+
+### Test Results
+
+| Metric | Result |
+|---|---:|
+| Accuracy | **99.68%** |
+| Fake Precision | **1.00** |
+| Fake Recall | **0.99** |
+| Fake F1-Score | **1.00** |
+| Real Precision | **0.99** |
+| Real Recall | **1.00** |
+| Real F1-Score | **1.00** |
+
+### Confusion Matrix
+
+```text
+                 Predicted
+               Fake    Real
+
+Actual Fake    3458      22
+Actual Real       3    4235
+```
+
+> **Note:** The 99.68% accuracy is the result obtained on the held-out test split of the deduplicated ISOT dataset. It should not be interpreted as universal accuracy on every type of news article or as proof that a claim is factually true or false.
+
+---
+
+## 🔐 Security Architecture
+
+The application includes several security controls designed to make the API safer for real-world deployment.
+
+### API Authentication
+
+Protected API endpoints require an API key using the:
+
+```text
+X-API-Key
+```
+
+header.
+
+API key comparison uses a constant-time comparison mechanism.
+
+### Rate Limiting
+
+API endpoints have configurable request limits to reduce abuse and excessive requests.
+
+### SSRF Protection
+
+URL-based article analysis includes protections against Server-Side Request Forgery (SSRF), including:
+
+- Only HTTP/HTTPS URLs are accepted
+- Private IP addresses are blocked
+- Loopback addresses are blocked
+- Link-local addresses are blocked
+- Reserved and multicast addresses are blocked
+- Cloud metadata addresses are blocked
+- Redirect destinations are revalidated
+- Maximum redirect count is enforced
+- Maximum response size is enforced
+- Network request timeout is enforced
+
+### Same-Origin Web Analysis
+
+The browser uses:
+
+```text
+/web/analyze
+```
+
+for web-based analysis instead of exposing the API key to client-side JavaScript.
+
+---
+
+## 📂 Project Structure
+
+```text
+Advanced-Fake-News-Analyzer/
+│
+├── app.py
+├── config.py
+├── detector.py
+├── requirement.txt
+├── README.md
+│
+├── data/
+│   ├── Fake.csv
+│   └── True.csv
+│
+├── models/
+│   ├── model.pkl
+│   └── vectorizer.pkl
+│
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── main.js
+│
+├── templates/
+│   └── index.html
+│
+└── docs/
+    └── api.md
+```
+
+> Dataset CSV files and trained model files are excluded from the Git repository because of their size. They are required locally to train/run the full model.
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/baiswarm/Advanced-Fake-News-Analyzer.git
+cd Advanced-Fake-News-Analyzer
+```
+
+### 2. Create a virtual environment
+
 ```bash
 python -m venv venv
+```
 
-# On Windows
+Activate it on Windows:
+
+```bash
 venv\Scripts\activate
-
-# On macOS/Linux
-source venv/bin/activate
 ```
 
-3. **Install dependencies**
+### 3. Install dependencies
+
 ```bash
-pip install -r requirements.txt
+pip install -r requirement.txt
 ```
 
-4. **Set up environment variables**
-```bash
-# Copy the example environment file
-cp .env.example .env
+### 4. Install NLTK resources
 
-# Edit .env and add your configuration
+Run Python:
+
+```python
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
 ```
 
-5. **Download NLTK data**
-```bash
-python setup_nltk.py
+---
+
+## 🔑 Environment Configuration
+
+Create a `.env` file in the project root.
+
+Example:
+
+```env
+FLASK_DEBUG=True
+SECRET_KEY=your-secret-key
+API_KEY=your-api-key
 ```
 
-6. **Run the application**
+For production deployment, use strong randomly generated secrets and disable Flask debug mode.
+
+---
+
+## ▶️ Running the Application
+
+Start the Flask application:
+
 ```bash
 python app.py
 ```
 
-7. **Access the application**
-```
-Open your browser and navigate to: http://localhost:5000
-```
+The application will be available at:
 
-## 📁 Project Structure
-
-```
-fake-news-detection/
-│
-├── app.py                      # Main Flask application
-├── detector.py                 # Fake news detector class
-├── config.py                   # Configuration settings
-├── setup_nltk.py              # NLTK setup script
-├── requirements.txt            # Python dependencies
-├── .env.example               # Environment variables template
-├── .gitignore                 # Git ignore rules
-│
-├── templates/
-│   └── index.html             # Web interface
-│
-├── static/
-│   ├── css/
-│   │   └── style.css          # Stylesheet
-│   └── js/
-│       └── main.js            # JavaScript logic
-│
-├── models/                     # Saved ML models (generated)
-│   ├── model.pkl
-│   └── vectorizer.pkl
-│
-├── data/                       # Training datasets
-│   ├── Fake.csv
-│   └── True.csv
-│
-└── docs/
-    ├── API.md                  # API documentation
-    └── DEPLOYMENT.md           # Deployment guide
+```text
+http://localhost:5000
 ```
 
-## 🔧 Configuration
-
-Edit the `.env` file to configure:
-
-```env
-# Flask Configuration
-FLASK_ENV=development
-FLASK_DEBUG=True
-SECRET_KEY=your-secret-key-here
-
-# Model Configuration
-MODEL_PATH=models/model.pkl
-VECTORIZER_PATH=models/vectorizer.pkl
-MAX_FEATURES=5000
-NGRAM_RANGE=1,3
-
-# API Configuration
-API_RATE_LIMIT=100
-API_KEY=your-api-key-here
-
-# News API (optional)
-NEWS_API_KEY=your-news-api-key
-```
-
-## 📊 API Endpoints
-
-### Analyze Text
-
-```bash
-POST /api/analyze
-Content-Type: application/json
-X-API-Key: your-api-key
-
-{
-  "type": "text",
-  "content": "Your news article text here"
-}
-```
-
-### Analyze URL
-
-```bash
-POST /api/analyze
-Content-Type: application/json
-X-API-Key: your-api-key
-
-{
-  "type": "url",
-  "content": "https://example.com/article"
-}
-```
-
-### Train Model
-
-```bash
-POST /api/train
-X-API-Key: your-api-key
-```
-
-See [API.md](docs/API.md) for complete API documentation.
-
-## 🧪 Model Performance
-
-| Metric | Score |
-|--------|-------|
-| Accuracy | 92.3% |
-| Precision | 91.8% |
-| Recall | 92.7% |
-| F1-Score | 92.2% |
-
-## 🛠️ Technology Stack
-
-- **Backend**: Flask, Python 3.8+
-- **Machine Learning**: scikit-learn, Random Forest
-- **NLP**: NLTK, TF-IDF Vectorization
-- **Web Scraping**: BeautifulSoup4, Requests
-- **Frontend**: HTML5, CSS3, JavaScript (ES6)
-- **Data Processing**: pandas, numpy
-
-## 📈 How It Works
-
-1. **Text Preprocessing**: Removes URLs, HTML tags, special characters, and stopwords
-2. **Feature Extraction**: Converts text to TF-IDF vectors (5000 features, 1-3 grams)
-3. **Classification**: Random Forest classifier (100 trees, max depth 20)
-4. **Prediction**: Returns label with confidence score and probability distribution
-
-## 🔒 Security Features
-
-- API key authentication
-- Rate limiting
-- Input validation and sanitization
-- CORS configuration
-- Environment variable protection
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👤 Author
-
-**Manas Baiswar**
-
-- GitHub: [@manasbaiswar](https://github.com/manasbaiswar)
-- Email: baiswarm@gmail.com
-  
-
-## 🙏 Acknowledgments
-
-- DIT University, Dehradun
-- Kaggle for the Fake and Real News Dataset
-- NLTK and scikit-learn communities
-
-## 🔮 Future Enhancements
-
-- [ ] Deep Learning integration (BERT/RoBERTa)
-- [ ] Multilingual support
-- [ ] Fact-checking API integration
-- [ ] Browser extension
-- [ ] Mobile application
-- [ ] Image and video analysis
-- [ ] Real-time monitoring dashboard
-
-## 📞 Support
-
-For issues and questions, please open an issue on GitHub or contact the author.
+Open the address in your browser and enter a news article to analyze it.
 
 ---
 
-⭐ If you find this project useful, please consider giving it a star!
+## 🔌 API
+
+The application provides REST API endpoints for programmatic access.
+
+### Analyze Text
+
+```text
+POST /api/analyze
+```
+
+Required header:
+
+```text
+X-API-Key: your-api-key
+```
+
+Example request:
+
+```json
+{
+  "text": "Your news article text here..."
+}
+```
+
+### Batch Analysis
+
+```text
+POST /api/batch-analyze
+```
+
+Allows multiple news articles to be analyzed in a single request.
+
+### Model Information
+
+```text
+GET /api/model-info
+```
+
+Returns information about the currently loaded model and configuration.
+
+### Health Check
+
+```text
+GET /health
+```
+
+### Web Analysis
+
+```text
+POST /web/analyze
+```
+
+Used by the web interface for same-origin analysis.
+
+More API details are available in:
+
+```text
+docs/api.md
+```
+
+---
+
+## ⚠️ Important Note About Confidence
+
+The displayed confidence is the machine-learning classifier's estimated classification probability.
+
+For example:
+
+```text
+FAKE — 87.4%
+```
+
+does **not** mean that the system has mathematically proven the article is 87.4% factually false.
+
+The system is a supervised text-classification model trained on labeled examples. Its predictions can be affected by the language, writing style, topic, and patterns present in the training dataset.
+
+---
+
+## 🎯 Use Cases
+
+The project can be used for:
+
+- Educational demonstrations of NLP
+- Machine-learning experimentation
+- News classification research
+- Cybersecurity/AI portfolio projects
+- Understanding text classification pipelines
+- Demonstrating secure Flask API development
+
+---
+
+## 🔮 Future Improvements
+
+Possible future enhancements include:
+
+- Transformer-based models such as BERT
+- External fact-checking integration
+- News-source credibility analysis
+- Explainable AI features
+- More diverse training datasets
+- Model comparison and benchmarking
+- Cloud deployment
+- User authentication
+- Database-backed prediction history
+
+---
+
+## 📚 Dataset
+
+This project uses the **ISOT Fake News Dataset**, containing labeled fake and real news articles.
+
+The dataset is used for educational and research purposes.
+
+---
+
+## 👨‍💻 Author
+
+**Manas Baiswar**
+
+B.Tech Cybersecurity
+
+GitHub: https://github.com/baiswarm
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+See `LICENSE` for details.
