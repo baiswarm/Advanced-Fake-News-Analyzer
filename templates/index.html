@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake News Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔍 Fake News Analyzer</h1>
+      <p>Paste an article's text, or give a URL, and get an ML-based real/fake assessment.</p>
+    </header>
+
+    <main>
+      <form id="analyze-form">
+        <div class="input-type-toggle">
+          <label>
+            <input type="radio" name="type" value="text" checked> Text
+          </label>
+          <label>
+            <input type="radio" name="type" value="url"> URL
+          </label>
+        </div>
+
+        <textarea id="content" name="content" rows="8"
+          placeholder="Paste article text or a URL here..."></textarea>
+
+        <button type="submit" id="submit-btn">Analyze</button>
+      </form>
+
+      <div id="result" class="result hidden"></div>
+      <div id="error" class="error hidden"></div>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
